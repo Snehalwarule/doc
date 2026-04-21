@@ -18,6 +18,57 @@ if (dropdownLi) {
   });
 }
 
+// ── SIDEBAR MENU ───────────────────────────────────────────
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarClose = document.getElementById('sidebarClose');
+const sidebar = document.getElementById('sidebar');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+const resourcesLink = document.getElementById('resourcesLink');
+const productItems = document.querySelectorAll('.sidebar-product-item');
+
+if (sidebarToggle && sidebar) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.add('active');
+  });
+}
+
+if (sidebarClose && sidebar) {
+  sidebarClose.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+  });
+}
+
+// Toggle products visibility when Resources is clicked
+if (resourcesLink) {
+  resourcesLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    productItems.forEach(item => {
+      item.classList.toggle('active');
+    });
+  });
+}
+
+// Close sidebar when clicking on a link (except Resources)
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    // Don't close sidebar for Resources link
+    if (link.id !== 'resourcesLink') {
+      if (sidebar) {
+        sidebar.classList.remove('active');
+      }
+    }
+  });
+});
+
+// Close sidebar when clicking outside
+if (sidebar) {
+  sidebar.addEventListener('click', (e) => {
+    if (e.target === sidebar) {
+      sidebar.classList.remove('active');
+    }
+  });
+}
+
 // ── FAQ ACCORDION ──────────────────────────────────────────
 document.querySelectorAll('.faq-item').forEach(item => {
   item.addEventListener('click', () => {

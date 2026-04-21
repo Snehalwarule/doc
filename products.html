@@ -62,18 +62,13 @@
       border-radius: 6px;
       overflow: hidden;
       background: #fdfaf6;
-      min-height: 240px;
+      aspect-ratio: 3/4;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 4rem;
       color: #c4a882;
       transition: border-color 0.2s;
-    }
-    .product-img-box img {
-      max-width: 100%;
-      height: auto;
-      display: block;
     }
     .product-img-box:hover { border-color: var(--green); }
 
@@ -153,82 +148,28 @@
   <!-- NAV -->
   <nav class="navbar">
     <a href="index.html" class="nav-logo" style="text-decoration:none;color:inherit;">
-      <span class="logo-leaf">🌿</span>
+      <span class="logo-leaf"><img src="images/logo.png" alt="Nidhi Elites Logo"></span>
       <strong>Nidhi Elites</strong>
     </a>
-    <ul class="nav-links">
-      <li><a href="products.html" style="color:var(--green);font-weight:500;">Shop</a></li>
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#impact">Impact</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">Resources ▾</a>
-        <div class="dropdown-menu mega-menu">
-
-          <div class="mega-col">
-            <div class="mega-heading">Our collection</div>
-            <a href="products.html#toothbrush" class="mega-item">
-              <strong>Toothbrushes</strong>
-              <span>Engineered with dual layer bristles</span>
-            </a>
-            <a href="products.html#hair-comb" class="mega-item">
-              <strong>Hair combs</strong>
-              <span>Sustainable design for daily care</span>
-            </a>
-            <a href="products.html#tongue-cleaner" class="mega-item">
-              <strong>Tongue cleaners</strong>
-              <span>Built to last six months</span>
-            </a>
-            <a href="products.html#pen" class="mega-item">
-              <strong>Pens</strong>
-              <span>Eco-friendly writing tools</span>
-            </a>
-          </div>
-
-          <div class="mega-col">
-            <div class="mega-heading">Learn more</div>
-            <a href="index.html#about" class="mega-item">
-              <strong>Our story</strong>
-              <span>Why we started Nidhi Elite</span>
-            </a>
-            <a href="index.html#about" class="mega-item">
-              <strong>Materials</strong>
-              <span>How we source sustainably</span>
-            </a>
-            <a href="index.html#about" class="mega-item">
-              <strong>Durability</strong>
-              <span>Six months of reliable performance</span>
-            </a>
-            <a href="index.html#about" class="mega-item">
-              <strong>Vision to grow</strong>
-              <span>Plans for individuals and businesses</span>
-            </a>
-          </div>
-
-          <div class="mega-col">
-            <div class="mega-heading">Support</div>
-            <a href="index.html#faq" class="mega-item">
-              <strong>FAQ</strong>
-              <span>Answers to common questions</span>
-            </a>
-            <a href="index.html#faq" class="mega-item">
-              <strong>Communication</strong>
-              <span>Reach out us with an email</span>
-            </a>
-            <a href="index.html#impact" class="mega-item">
-              <strong>Sustainability</strong>
-              <span>Our commitment to the planet</span>
-            </a>
-            <a href="mailto:nidhielite@gmail.com" class="mega-item">
-              <strong>Contact us</strong>
-              <span>Get in touch with our team</span>
-            </a>
-          </div>
-
-        </div>
-      </li>
-    </ul>
-    <a href="#" class="btn-login">Log In</a>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
   </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-close" id="sidebarClose">✕</button>
+    <ul class="sidebar-menu">
+      <li><a href="#products" class="sidebar-link">Shop</a></li>
+      <li><a href="#about" class="sidebar-link">About</a></li>
+      <li><a href="#impact" class="sidebar-link">Impact</a></li>
+      <li><a href="#resources" class="sidebar-link" id="resourcesLink">Resources</a></li>
+      <li class="sidebar-divider sidebar-product-item"></li>
+      <li class="sidebar-subtitle sidebar-product-item">Our collection</li>
+      <li class="sidebar-product-item"><a href="products.html#toothbrush" class="sidebar-link">Toothbrush</a></li>
+      <li class="sidebar-product-item"><a href="products.html#hair-comb" class="sidebar-link">Hair Comb</a></li>
+      <li class="sidebar-product-item"><a href="products.html#tongue-cleaner" class="sidebar-link">Tongue Cleaner</a></li>
+      <li class="sidebar-product-item"><a href="products.html#pen" class="sidebar-link">Pen</a></li>
+    </ul>
+  </aside>
 
   <!-- PRODUCTS PAGE -->
   <div class="products-page">
@@ -386,8 +327,8 @@
     <div class="footer-top">
       <div class="footer-brand">
         <div class="nav-logo">
-          <span class="logo-leaf">🌿</span>
-          <strong>NIDHIELITE ENTERPRISES PRIVATE LIMITED</strong>
+          <span class="logo-leaf"><img src="images/logo.png" alt="Nidhi Elites Logo"></span>
+          <solid>NIDHIELITE ENTERPRISES PRIVATE LIMITED</solid>
         </div>
         <p>House no. 596, Wadavali road, Kadav, Karjat, Raigarh<br/>(MH)- 410201, Maharashtra<br/><a href="mailto:nidhielite@gmail.com" style="color:var(--white);text-decoration:none;">nidhielite@gmail.com</a></p>
         <div class="social-icons">
@@ -425,7 +366,58 @@
   </footer>
 
   <script>
-    // Scroll reveal for product rows
+    // ── SIDEBAR MENU ────────────────────────────────────────
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const resourcesLink = document.getElementById('resourcesLink');
+    const productItems = document.querySelectorAll('.sidebar-product-item');
+
+    if (sidebarToggle && sidebar) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.add('active');
+      });
+    }
+
+    if (sidebarClose && sidebar) {
+      sidebarClose.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    }
+
+    // Toggle products visibility when Resources is clicked
+    if (resourcesLink) {
+      resourcesLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        productItems.forEach(item => {
+          item.classList.toggle('active');
+        });
+      });
+    }
+
+    // Close sidebar when clicking on a link (except Resources)
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Don't close sidebar for Resources link
+        if (link.id !== 'resourcesLink') {
+          if (sidebar) {
+            sidebar.classList.remove('active');
+          }
+        }
+      });
+    });
+
+    // Close sidebar when clicking outside
+    if (sidebar) {
+      sidebar.addEventListener('click', (e) => {
+        if (e.target === sidebar) {
+          sidebar.classList.remove('active');
+        }
+      });
+    }
+
+    // ── SCROLL REVEAL FOR PRODUCT ROWS ──────────────────────
     const rows = document.querySelectorAll('.product-row');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
