@@ -670,7 +670,7 @@ color: #000000;}
 .footer-brand p { font-size: 0.82rem; line-height: 1.7; margin-bottom: 1rem; }
 
 .social-icons { display: flex; gap: 0.8rem; font-size: 1.1rem; }
-.social-icons a { text-decoration: none; }
+.social-icons a { text-decoration: none;color: var(--white) }
 
 .footer-links {
   display: grid;
