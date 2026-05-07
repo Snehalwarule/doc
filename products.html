@@ -9,7 +9,7 @@
   <style>
     /* ── PRODUCTS PAGE SPECIFIC STYLES ── */
     .products-page {
-      max-width: 860px;
+      max-width:860px;
       margin: 0 auto;
       padding: 3rem 5% 5rem;
     }
@@ -56,21 +56,152 @@
       align-items: start;
     }
 
-    /* Image boxes */
+    /* Image boxes - Slider Container */
     .product-img-box {
-      border: 1px solid #d8d3cb;
-      border-radius: 6px;
+      width: 100%;
+      max-width: 350px;
+      align-items: center;
+      border: 2px solid #FFFFFF;
+      border-radius: 10px;
       overflow: hidden;
-      background: #fdfaf6;
-      aspect-ratio: 3/4;
+      background: #FFFFFF;
+      aspect-ratio: 3 / 4;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      font-size: 4rem;
+      color: #FFFFFF;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .product-img-box:hover { transform: scale(1.08); }
+    /* .product-img-box:hover { border-color: var(--green); } */
+
+    /* Slider styles */
+    .slider-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Main image display */
+    .main-image-container {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 4rem;
-      color: #c4a882;
-      transition: border-color 0.2s;
+      overflow: hidden;
+      background: #FFFFFF;
+      border-bottom: 1px solid #e0dbd2;
     }
-    .product-img-box:hover { border-color: var(--green); }
+
+    .main-image-container img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: fill;
+      cursor: pointer;
+    }
+
+    .main-image-label {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .slider-wrapper {
+      width: 100%;
+      position: relative;
+      overflow-y: auto;
+      max-height: 150px;
+    }
+
+    .slider-track {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      width: 100%;
+      padding: 10px;
+    }
+
+    .slider-slide {
+      width: calc(100% - 16px);
+      height:100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border: 3px solid #ddd;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .slider-slide:hover {
+      border-color: var(--green);
+      background: rgba(0, 128, 0, 0.05);
+    }
+
+    .slider-slide.active {
+      border-color: var(--green);
+      background: rgba(0, 128, 0, 0.1);
+    }
+
+    .slider-slide img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+
+    .slider-slide-label {
+      font-size: 0.7rem;
+      color: #999;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    /* Slider Navigation Buttons */
+    .slider-nav-button {
+      display: none;
+    }
+
+    .slider-nav-button:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .slider-prev {
+      left: 8px;
+    }
+
+    .slider-next {
+      right: 8px;
+    }
+
+    /* Slider dots */
+    .slider-dots {
+      display: none;
+    }
+
+    .slider-dot {
+      display: none;
+    }
+
+    .slider-dot.active {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .slider-dot:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
 
     /* Info column */
     .product-info {
@@ -141,6 +272,135 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ── LIGHTBOX MODAL ── */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .lightbox-modal.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: slideIn 0.3s ease-in-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 1001;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Make images clickable */
+    .slider-slide img {
+      cursor: pointer;
+    }
+
+    /* ── THUMBNAIL GALLERY ── */
+    .thumbnail-gallery {
+      display: none;
+    }
+
+    /* Lightbox with navigation */
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 1002;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .lightbox-prev {
+      left: 20px;
+    }
+
+    .lightbox-next {
+      right: 20px;
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 16px;
+      border-radius: 20px;
+      z-index: 1002;
+    }
   </style>
 </head>
 <body>
@@ -158,9 +418,9 @@
   <aside class="sidebar" id="sidebar">
     <button class="sidebar-close" id="sidebarClose">✕</button>
     <ul class="sidebar-menu">
-      <li><a href="#products" class="sidebar-link">Shop</a></li>
+      <li><a href="products.html" class="sidebar-link">Shop</a></li>
       <li><a href="about.html" class="sidebar-link">About</a></li>
-      <li><a href="#impact" class="sidebar-link">Impact</a></li>
+      <li><a href="index.html#impact" class="sidebar-link">Impact</a></li>
       <li><a href="#resources" class="sidebar-link" id="resourcesLink">Resources</a></li>
       <li class="sidebar-divider sidebar-product-item"></li>
       <li class="sidebar-subtitle sidebar-product-item">Our collection</li>
@@ -177,80 +437,138 @@
 
     <!-- ── TOOTHBRUSH ── -->
     <div class="product-row">
-      <h2 class="product-row-title">Toothbrush That Lasts Six Months</h2>
+      <h2 class="product-row-title">Toothbrush For Adult </h2>
       <div class="product-row-body">
-
-        <!-- Image 1 -->
+        <!-- Slider 1 -->
         <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-              <img src="images/img1.png">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <div class="slider-track">
+                <div class="slider-slide">
+                  <img src="images/Asubimg1.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Asubimg2.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Asubimg3.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Asubimg4.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Asubimg5.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+              </div>
+              <button class="slider-nav-button slider-prev" onclick="moveSlider(this, -1)">❮</button>
+              <button class="slider-nav-button slider-next" onclick="moveSlider(this, 1)">❯</button>
+              <div class="slider-dots">
+                <span class="slider-dot active" onclick="goToSlide(this, 0)"></span>
+                <span class="slider-dot" onclick="goToSlide(this, 1)"></span>
+                <span class="slider-dot" onclick="goToSlide(this, 2)"></span>
+                <span class="slider-dot" onclick="goToSlide(this, 3)"></span>
+                <span class="slider-dot" onclick="goToSlide(this, 4)"></span>
+              </div>
             </div>
-            <div class="color-swatches" style="justify-content:center;margin-top:0.8rem;">
-              <div class="swatch" style="background:#E8534A;"></div>
-              <div class="swatch" style="background:#4A90D9;"></div>
-              <div class="swatch" style="background:#2C2C2C;"></div>
-            </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Adult</p>
           </div>
         </div>
-
-        <!-- Image 2 -->
-        <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-              <img src="images/img2.png">
-            </div>
-            <div class="color-swatches" style="justify-content:center;margin-top:0.8rem;">
-              <div class="swatch" style="background:#4CAF50;"></div>
-              <div class="swatch" style="background:#9C27B0;"></div>
-              <div class="swatch" style="background:#E8534A;"></div>
-            </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Children</p>
-          </div>
-        </div>
-
-        <!-- Info -->
         <div class="product-info">
-          <p class="product-info-desc">Colors are available in toothbrush for Adult and children</p>
-          <p class="product-price">₹70 per pcs</p>
-          <p class="product-contact-note">For shopping do contact</p>
+          <p class="product-info-desc" style="color: black;">Five Colors are available in toothbrush</p>
+          <p class="product-price" style="color: black;">₹70 per pcs</p>
+          <p class="product-contact-note" style="color: black;">For shopping do contact</p>
           <a href="https://wa.me/917841990321?text=Hi,%20I%20would%20like%20to%20order%20a%20Toothbrush.%20Please%20share%20the%20details." class="btn-contact" target="_blank">Contact</a>
         </div>
-
       </div>
     </div>
+    
+    <div class="product-row">
+      <h2 class="product-row-title">Toothbrush For Children</h2>
+      <div class="product-row-body">
+        <!-- Slider 1 -->
+        <div class="product-img-box">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <div class="slider-track">
+                <div class="slider-slide">
+                  <img src="images/Csubimg1.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Csubimg2.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Csubimg3.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Csubimg4.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/Csubimg5.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+              </div>
+            </div>
+            <button class="slider-nav-button slider-prev" onclick="moveSlider(this, -1)">❮</button>
+            <button class="slider-nav-button slider-next" onclick="moveSlider(this, 1)">❯</button>
+            <div class="slider-dots">
+              <span class="slider-dot active" onclick="goToSlide(this, 0)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 1)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 2)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 3)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 4)"></span>
+            </div>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-info-desc" style="color: black;">Five Colors are available in toothbrush</p>
+          <p class="product-price" style="color: black;">₹70 per pcs</p>
+          <p class="product-contact-note" style="color: black;">For shopping do contact</p>
+          <a href="https://wa.me/917841990321?text=Hi,%20I%20would%20like%20to%20order%20a%20Toothbrush.%20Please%20share%20the%20details." class="btn-contact" target="_blank">Contact</a>
+        </div>
+      </div>
+    </div>  
 
     <!-- ── TONGUE CLEANER ── -->
     <div class="product-row">
       <h2 class="product-row-title">Tongue Cleaner For Daily Wellness</h2>
       <div class="product-row-body">
-
+        <!-- Slider 1 -->
         <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-              <img src="images/img3.png">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <div class="slider-track">
+                <div class="slider-slide">
+                  <img src="images/img3.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/img4.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+              </div>
             </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Packaged</p>
+            <button class="slider-nav-button slider-prev" onclick="moveSlider(this, -1)">❮</button>
+            <button class="slider-nav-button slider-next" onclick="moveSlider(this, 1)">❯</button>
+            <div class="slider-dots">
+              <span class="slider-dot active" onclick="goToSlide(this, 0)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 1)"></span>
+            </div>
           </div>
         </div>
-
-        <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem; transform:rotate(90deg);">
-              <img src="images/img4.png">
-            </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Natural Bamboo</p>
-          </div>
-        </div>
-
         <div class="product-info">
-          <p class="product-info-desc">Natural bamboo fiber keeps it gentle</p>
-          <p class="product-price">₹40 per pcs</p>
-          <p class="product-contact-note">For shopping do contact</p>
+          <p class="product-info-desc" style="color: black;">Natural bamboo fiber keeps it gentle</p>
+          <p class="product-price" style="color: black;">₹40 per pcs</p>
+          <p class="product-contact-note" style="color: black;">For shopping do contact</p>
           <a href="https://wa.me/917841990321?text=Hi,%20I%20would%20like%20to%20order%20a%20Tongue%20Cleaner.%20Please%20share%20the%20details." class="btn-contact" target="_blank">Contact</a>
         </div>
-
       </div>
     </div>
 
@@ -258,69 +576,88 @@
     <div class="product-row">
       <h2 class="product-row-title">Pen That Writes Without Guilt</h2>
       <div class="product-row-body">
-
+        <!-- Slider 1 -->
         <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-              <img src="images/img5.png">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <div class="slider-track">
+                <div class="slider-slide">
+                  <img src="images/img5.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/img6.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+              </div>
             </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Bamboo Pen</p>
+            <button class="slider-nav-button slider-prev" onclick="moveSlider(this, -1)">❮</button>
+            <button class="slider-nav-button slider-next" onclick="moveSlider(this, 1)">❯</button>
+            <div class="slider-dots">
+              <span class="slider-dot active" onclick="goToSlide(this, 0)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 1)"></span>
+            </div>
           </div>
         </div>
-
-        <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-              <img src="images/img6.png">
-            </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Set of 5</p>
-          </div>
-        </div>
-
         <div class="product-info">
-          <p class="product-info-desc">Same durable construction, same earth-kind promise</p>
-          <p class="product-price">₹22 per pcs</p>
-          <p class="product-contact-note">For shopping do contact</p>
+          <p class="product-info-desc" style="color: black;">Same durable construction, same earth-kind promise</p>
+          <p class="product-price" style="color: black;">₹22 per pcs</p>
+          <p class="product-contact-note" style="color: black;">For shopping do contact</p>
           <a href="https://wa.me/917841990321?text=Hi,%20I%20would%20like%20to%20order%20a%20Bamboo%20Pen.%20Please%20share%20the%20details." class="btn-contact" target="_blank">Contact</a>
         </div>
-
       </div>
     </div>
 
     <!-- ── HAIR COMB ── -->
     <div class="product-row">
-      <h2 class="product-row-title">Hair Comb Built To Last</h2>
+      <h2 class="product-row-title" style="align-items: center;">Hair Comb Built To Last</h2>
       <div class="product-row-body">
-
+        <!-- Slider 1 -->
         <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-              <img src="images/img7.png">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <div class="slider-track">
+                <div class="slider-slide">
+                  <img src="images/img7.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+                <div class="slider-slide">
+                  <img src="images/img8.png">
+                  <div class="slider-slide-label"></div>
+                </div>
+              </div>
             </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Fine Tooth</p>
+            <button class="slider-nav-button slider-prev" onclick="moveSlider(this, -1)">❮</button>
+            <button class="slider-nav-button slider-next" onclick="moveSlider(this, 1)">❯</button>
+            <div class="slider-dots">
+              <span class="slider-dot active" onclick="goToSlide(this, 0)"></span>
+              <span class="slider-dot" onclick="goToSlide(this, 1)"></span>
+            </div>
           </div>
         </div>
-
-        <div class="product-img-box">
-          <div style="text-align:center;">
-            <div style="font-size:3.5rem;">
-             <img src="images/img8.png">
-            </div>
-            <p style="font-size:0.7rem;color:#999;margin-top:0.5rem;">Wide Tooth</p>
-          </div>
-        </div>
-
         <div class="product-info">
-          <p class="product-info-desc">Strengthened with PBT, finished with bamboo</p>
-          <p class="product-price">₹70 per pcs</p>
-          <p class="product-contact-note">For shopping do contact</p>
+          <p class="product-info-desc" style="color: black;">Strengthened with PBT, finished with bamboo</p>
+          <p class="product-price" style="color: black;">₹70 per pcs</p>
+          <p class="product-contact-note" style="color: black;">For shopping do contact</p>
           <a href="https://wa.me/917841990321?text=Hi,%20I%20would%20like%20to%20order%20a%20Hair%20Comb.%20Please%20share%20the%20details." class="btn-contact" target="_blank">Contact</a>
         </div>
-
       </div>
     </div>
 
   </div><!-- /products-page -->
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="lightboxModal">
+    <div class="lightbox-content">
+      <img id="lightboxImage" src="" alt="Full size image">
+      <button class="lightbox-nav lightbox-prev" onclick="previousLightboxImage()">❮</button>
+      <button class="lightbox-nav lightbox-next" onclick="nextLightboxImage()">❯</button>
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <div class="lightbox-counter">
+        <span id="lightboxCounter">1 / 1</span>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -330,7 +667,7 @@
           <span class="logo-leaf"><img src="images/logo.png" alt="Nidhi Elites Logo"></span>
           <solid>NIDHIELITE ENTERPRISES PRIVATE LIMITED</solid>
         </div>
-        <p>House no. 596, Wadavali road, Kadav, Karjat, Raigarh<br/>(MH)- 410201, Maharashtra<br/><a href="mailto:nidhielite@gmail.com" style="color:var(--white);text-decoration:none;">nidhielite@gmail.com</a></p>
+        <p>House no. 596, Wadavali road, Kadav, Karjat, Raigarh<br/>(MH)- 410201, Maharashtra<br/><a href="mailto:nidhielite25@gmail.com" style="color:var(--white);text-decoration:none;">nidhielite25@gmail.com</a></p>
         <div class="social-icons">
           <a href="https://www.instagram.com/shambhuprasadclinic?igsh=MTZkZzl6ZjVzdzRlcA==" target="_blank"><img src="images/Social Links.png" alt="Instagram">shambhuprasadclinic</a>
         </div>
@@ -347,7 +684,7 @@
           <h4>Contact us</h4>
           <ul>
             <li><a href="https://wa.me/917841990321" target="_blank">WhatsApp</a></li>
-            <li><a href="mailto:nidhielite@gmail.com">Email</a></li>
+            <li><a href="mailto:nidhielite25@gmail.com">Email</a></li>
           </ul>
         </div>
       </div>
@@ -431,6 +768,191 @@
     window.addEventListener('scroll', () => {
       navbar.style.boxShadow = window.scrollY > 10
         ? '0 4px 20px rgba(0,0,0,0.08)' : 'none';
+    });
+
+    // ── SLIDER FUNCTIONALITY ────────────────────────────────
+    // Initialize main image gallery
+
+    function initializeGallery() {
+      document.querySelectorAll('.slider-container').forEach(container => {
+        // Check if already initialized
+        if (container.querySelector('.main-image-container')) return;
+
+        // Create main image container
+        const mainContainer = document.createElement('div');
+        mainContainer.className = 'main-image-container';
+        container.insertBefore(mainContainer, container.firstChild);
+
+        const slides = container.querySelectorAll('.slider-slide');
+        
+        if (slides.length > 0) {
+          updateMainImage(container, 0);
+        }
+
+        // Add click listeners to thumbnails
+        slides.forEach((slide, index) => {
+          slide.addEventListener('click', function() {
+            updateMainImage(container, index);
+          });
+        });
+      });
+    }
+
+    function updateMainImage(container, index) {
+      const slides = container.querySelectorAll('.slider-slide');
+      const mainContainer = container.querySelector('.main-image-container');
+      
+      if (!slides[index] || !mainContainer) return;
+
+      const img = slides[index].querySelector('img');
+      const label = slides[index].querySelector('.slider-slide-label');
+      
+      // Update main image
+      mainContainer.innerHTML = `
+        <img src="${img.src}" alt="${img.alt}" onclick="openLightboxFromMainImage(event)">
+        ${label ? `<div class="main-image-label">${label.textContent}</div>` : ''}
+      `;
+
+      // Update active thumbnail
+      slides.forEach(s => s.classList.remove('active'));
+      slides[index].classList.add('active');
+
+      // Store current images for lightbox
+      window.currentMainContainer = container;
+      window.currentMainImageIndex = index;
+    }
+
+    function openLightboxFromMainImage(event) {
+      if (!window.currentMainContainer) return;
+      
+      const container = window.currentMainContainer;
+      const index = window.currentMainImageIndex || 0;
+      
+      openLightboxFromThumbnail(container, index);
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      initializeGallery();
+    });
+
+    // Also initialize if DOM is already ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeGallery);
+    } else {
+      initializeGallery();
+    }
+
+    // ── LIGHTBOX GALLERY FUNCTIONALITY ──────────────────────
+    let currentLightboxImages = [];
+    let currentLightboxIndex = 0;
+
+    function getAllImagesFromSlider(sliderContainer) {
+      const slides = sliderContainer.querySelectorAll('.slider-slide img');
+      const images = [];
+      slides.forEach(img => {
+        images.push({
+          src: img.src,
+          alt: img.alt
+        });
+      });
+      return images;
+    }
+
+    function createThumbnailGallery(sliderContainer) {
+      // Thumbnail gallery removed - all images are now visible
+    }
+
+    function openLightboxFromThumbnail(sliderContainer, index) {
+      currentLightboxImages = getAllImagesFromSlider(sliderContainer);
+      currentLightboxIndex = index;
+      
+      const modal = document.getElementById('lightboxModal');
+      const lightboxImage = document.getElementById('lightboxImage');
+      
+      lightboxImage.src = currentLightboxImages[currentLightboxIndex].src;
+      lightboxImage.alt = currentLightboxImages[currentLightboxIndex].alt;
+      
+      updateLightboxCounter();
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function previousLightboxImage() {
+      if (currentLightboxImages.length === 0) return;
+      currentLightboxIndex--;
+      if (currentLightboxIndex < 0) {
+        currentLightboxIndex = currentLightboxImages.length - 1;
+      }
+      updateLightboxImage();
+    }
+
+    function nextLightboxImage() {
+      if (currentLightboxImages.length === 0) return;
+      currentLightboxIndex++;
+      if (currentLightboxIndex >= currentLightboxImages.length) {
+        currentLightboxIndex = 0;
+      }
+      updateLightboxImage();
+    }
+
+    function updateLightboxImage() {
+      const lightboxImage = document.getElementById('lightboxImage');
+      lightboxImage.src = currentLightboxImages[currentLightboxIndex].src;
+      lightboxImage.alt = currentLightboxImages[currentLightboxIndex].alt;
+      updateLightboxCounter();
+    }
+
+    function updateLightboxCounter() {
+      const counter = document.getElementById('lightboxCounter');
+      counter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxImages.length}`;
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+      currentLightboxImages = [];
+      currentLightboxIndex = 0;
+    }
+
+    // Add click listeners to all slider images and create thumbnail galleries
+    document.querySelectorAll('.slider-container').forEach(container => {
+      createThumbnailGallery(container);
+      
+      container.querySelectorAll('.slider-slide img').forEach((img, index) => {
+        img.addEventListener('click', function() {
+          openLightboxFromThumbnail(container, index);
+        });
+      });
+    });
+
+    // Close lightbox when clicking outside the image
+    const lightboxModal = document.getElementById('lightboxModal');
+    if (lightboxModal) {
+      lightboxModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeLightbox();
+        }
+      });
+    }
+
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard navigation in lightbox
+    document.addEventListener('keydown', function(e) {
+      if (currentLightboxImages.length === 0) return;
+      
+      if (e.key === 'ArrowLeft') {
+        previousLightboxImage();
+      } else if (e.key === 'ArrowRight') {
+        nextLightboxImage();
+      }
     });
   </script>
 </body>
